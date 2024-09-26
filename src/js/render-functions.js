@@ -1,9 +1,9 @@
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
-  const lightbox = new SimpleLightbox('.list-img a');
-export function renderUsers(photos, photoList) {
-   
 
+const lightbox = new SimpleLightbox('.list-img a');
+
+export async function renderUsers(photos, photoList) {
     const markup = photos
         .map((photo) => {
             return `<li class="imgAdded">
@@ -22,6 +22,5 @@ export function renderUsers(photos, photoList) {
 
     photoList.insertAdjacentHTML("beforeend", markup);
 
-  
-    lightbox.refresh();
+    lightbox.refresh(); // Обновляем lightbox, чтобы он учитывал новые элементы
 }
