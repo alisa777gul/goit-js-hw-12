@@ -53,7 +53,7 @@ formNew.addEventListener("submit", async (event) => {
             loading.classList.add("visually-hidden");
             iziToast.error({
                 title: 'Error',
-                message: 'An error occurred while fetching images. Please try again later.',
+                message: 'Sorry, there are no images matching your search query. Please try again!',
                 position: 'topRight'
             });
         }
@@ -61,7 +61,7 @@ formNew.addEventListener("submit", async (event) => {
         loading.classList.add("visually-hidden");
         iziToast.error({
             title: 'Error',
-            message: 'Please enter a valid search query!',
+            message: 'Sorry, there are no images matching your search query. Please try again!',
             position: 'topRight'
         });
     }
