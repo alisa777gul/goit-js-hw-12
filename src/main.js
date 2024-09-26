@@ -17,7 +17,7 @@ import { fetchPhotos } from './js/pixabay-api.js';
 let page = 1;
 let per_page = 15;
 let query = '';
-
+let totalHits = 0;
 
 formNew.addEventListener("submit", async (event) => { 
     event.preventDefault(); 
@@ -29,20 +29,33 @@ formNew.addEventListener("submit", async (event) => {
 
     if (query !== "") { 
         try {
-            const photos = await fetchPhotos(query, page, per_page); 
-            renderUsers(photos, photoList);
+            const { hits, totalHits: total } = await fetchPhotos(query, page, per_page); 
+            totalHits = total; 
+            renderUsers(hits, photoList);
 
-            
-            if (photos.length >= per_page) {
+            if (hits.length >= per_page && page * per_page < totalHits) {
                 fetchPhotosBtn.classList.remove("visually-hidden");
             } else {
                 fetchPhotosBtn.classList.add("visually-hidden");
+                if (hits.length === 0) {
+                    iziToast.info({
+                        title: 'End of Results',
+                        message: "We're sorry, but you've reached the end of search results.",
+                        position: 'topRight',
+                        timeout: 5000
+                    });
+                }
             }
             loading.classList.add("visually-hidden");
         } catch (error) {
             console.log(error);
             fetchPhotosBtn.classList.add("visually-hidden");
             loading.classList.add("visually-hidden");
+            iziToast.error({
+                title: 'Error',
+                message: 'An error occurred while fetching images. Please try again later.',
+                position: 'topRight'
+            });
         }
     } else {
         loading.classList.add("visually-hidden");
@@ -54,24 +67,47 @@ formNew.addEventListener("submit", async (event) => {
     }
 });
 
-
 fetchPhotosBtn.addEventListener("click", async () => {
     try {
         fetchPhotosBtn.classList.add("visually-hidden");
         loading.classList.remove("visually-hidden");
         page += 1; 
-        const photos = await fetchPhotos(query, page, per_page); 
-        renderUsers(photos, photoList);
+        const { hits, totalHits: total } = await fetchPhotos(query, page, per_page); 
+        totalHits = total; 
+        renderUsers(hits, photoList);
 
-    
-        if (photos.length >= per_page) {
+       setTimeout(() => {
+            const galleryItems = document.querySelectorAll(".list-img"); // Adjust this selector if needed
+            if (galleryItems.length > 0) {
+                const itemHeight = galleryItems[0].getBoundingClientRect().height;
+                window.scrollBy({
+                    top: itemHeight * 2,
+                    behavior: 'smooth'
+                });
+            }
+        }, 100);
+
+        if (hits.length >= per_page && page * per_page < totalHits) {
             fetchPhotosBtn.classList.remove("visually-hidden");
         } else {
             fetchPhotosBtn.classList.add("visually-hidden");
+            if (page * per_page >= totalHits) {
+                iziToast.info({
+                    title: 'End of Results',
+                    message: "We're sorry, but you've reached the end of search results.",
+                    position: 'topRight',
+                    timeout: 5000
+                });
+            }
         }
         loading.classList.add("visually-hidden");
     } catch (error) {
         console.log(error);
+        iziToast.error({
+            title: 'Error',
+            message: 'An error occurred while fetching images. Please try again later.',
+            position: 'topRight'
+        });
         fetchPhotosBtn.classList.add("visually-hidden");
         loading.classList.add("visually-hidden");
     }

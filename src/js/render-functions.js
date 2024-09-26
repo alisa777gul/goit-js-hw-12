@@ -22,5 +22,5 @@ export async function renderUsers(photos, photoList) {
 
     photoList.insertAdjacentHTML("beforeend", markup);
 
-    lightbox.refresh(); // Обновляем lightbox, чтобы он учитывал новые элементы
+    lightbox.refresh();
 }

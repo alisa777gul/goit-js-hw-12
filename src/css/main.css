@@ -22,6 +22,7 @@ main {
     border-radius: 50%;
     box-sizing: border-box;
     animation: 1s rotate linear infinite;
+    margin-top: 15px;
 }
 
 .loader:before,
