@@ -77,9 +77,9 @@ fetchPhotosBtn.addEventListener("click", async () => {
         renderUsers(hits, photoList);
 
        setTimeout(() => {
-            const galleryItems = document.querySelectorAll(".list-img"); // Adjust this selector if needed
-            if (galleryItems.length > 0) {
-                const itemHeight = galleryItems[0].getBoundingClientRect().height;
+            const listItems = document.querySelectorAll(".list-img"); // Adjust this selector if needed
+            if (listItems.length > 0) {
+                const itemHeight = listItems[0].getBoundingClientRect().height;
                 window.scrollBy({
                     top: itemHeight * 2,
                     behavior: 'smooth'
