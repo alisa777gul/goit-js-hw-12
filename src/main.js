@@ -105,7 +105,7 @@ fetchPhotosBtn.addEventListener("click", async () => {
         console.log(error);
         iziToast.error({
             title: 'Error',
-            message: 'An error occurred while fetching images. Please try again later.',
+            message: 'Sorry, there are no images matching your search query. Please try again!',
             position: 'topRight'
         });
         fetchPhotosBtn.classList.add("visually-hidden");
